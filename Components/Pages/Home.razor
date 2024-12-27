@@ -1,0 +1,41 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<MudSwitch @bind-Value="showListView" Label="@(showListView ? "Show Calendar View" : "Show List View")" />
+
+@if (calendarItems != null && calendarItems.Count > 0)
+{
+    if (showListView)
+    {
+        <MudDataGrid Height="700px" @bind-Items="calendarItems" T="CalendarItem">
+            <Columns>
+                <PropertyColumn Title="Start" Property="x => x.Start" />
+                <PropertyColumn Title="End" Property="x => x.End" />
+                <PropertyColumn Title="Text" Property="x => x.Text" />
+            </Columns>
+        </MudDataGrid>
+    }
+    else
+    {
+        <MudCalendar Height="700" Items="calendarItems" />
+    }
+}
+
+@code {
+    bool showListView { get; set; } = true;
+
+    List<CalendarItem> calendarItems = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        // Test data
+        DateTime today = DateTime.Now;
+        calendarItems.Add(new CalendarItem { Start = today.AddHours(-1), End = today.AddHours(1), Text = "Test 1" });
+        calendarItems.Add(new CalendarItem { Start = today.AddHours(-2), End = today.AddHours(2), Text = "Test 2" });
+        calendarItems.Add(new CalendarItem { Start = today.AddHours(-3), End = today.AddHours(3), Text = "Test 3" });
+        calendarItems.Add(new CalendarItem { Start = today.AddHours(-4), End = today.AddHours(4), Text = "Test 4" });
+        calendarItems.Add(new CalendarItem { Start = today.AddHours(-5), End = today.AddHours(5), Text = "Test 5" });
+    }
+}
